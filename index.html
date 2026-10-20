@@ -4,7 +4,6 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="robots" content="noindex">
   <meta name="description"
     content="Ukemi-SafeFall: An Ukemi-inspired Injury-Aware Falling and Recovery framework for humanoid robots.">
   <meta name="keywords"
@@ -27,7 +26,7 @@
     href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Instrument+Sans:ital,wght@0,500;0,600;0,700;1,400&family=IBM+Plex+Mono:wght@400;500;600&display=swap"
     rel="stylesheet">
 
-  <link rel="stylesheet" href="./static/css/index.css?v=20260731hwsoon">
+  <link rel="stylesheet" href="./static/css/index.css?v=20261010logos14">
   <script defer src="./static/js/index.js"></script>
 </head>
 
@@ -39,9 +38,8 @@
     <div class="safebar-inner">
       <a href="#top" class="wordmark">Ukemi-SafeFall</a>
       <div class="safebar-links">
-        <a href="#overview">Overview</a>
-        <a href="#framework">Framework</a>
-        <a href="#comparisons">Comparisons</a>
+        <a href="#abstract">Abstract</a>
+        <a href="#method">Method</a>
         <a href="#results">Results</a>
         <a href="#citation">Citation</a>
       </div>
@@ -51,19 +49,37 @@
   <header class="hero" id="top">
     <div class="hero-bg" aria-hidden="true"></div>
     <div class="wrap-wide">
-      <div class="hero-eyebrow">Under Review &middot; 2026</div>
+      <div class="hero-eyebrow">IEEE-RAS Humanoids 2026 &middot; Accepted</div>
       <h1 class="title">Ukemi-SafeFall: An Ukemi-inspired Injury-Aware <span class="accent">Falling and
           Recovery</span></h1>
-      <p class="subtitle">When a humanoid cannot avoid a fall, the goal is to reduce mechanical damage on impact and
-        still stand up afterward. Ukemi-SafeFall learns this behavior from martial-arts <em>ukemi</em> (breakfall)
-        techniques, with a Score-Matching Motion Prior to keep motions natural.</p>
-
-      <p class="authors">Anonymous Authors</p>
-
+      <p class="authors"><a href="https://github.com/ImmortalA" target="_blank" rel="noopener">Tran Duc Anh</a><sup>1,*</sup>,
+        <a href="https://quanganh2201.github.io/" target="_blank" rel="noopener">Quang-Anh Vu</a><sup>1,*</sup>,
+        Hieu T. Nguyen<sup>1</sup>,
+        Loc Pham<sup>1</sup>,
+        Le-Chuong Nguyen<sup>1</sup>,
+        Quang Huy Dao<sup>1</sup>,
+        Dao Hoang Vu<sup>1</sup>,
+        <a href="https://scholar.google.com/citations?user=hZGzoFwAAAAJ&amp;hl=vi&amp;oi=ao" target="_blank" rel="noopener">Truong Nguyen</a><sup>2</sup>,
+        <a href="https://scholar.google.com/citations?user=eF7sD5IAAAAJ&amp;hl=en" target="_blank" rel="noopener">Chuong Nguyen</a><sup>1,&dagger;</sup>,
+        <a href="https://scholar.google.com/citations?user=tgy0skAAAAAJ&amp;hl=vi&amp;oi=sra" target="_blank" rel="noopener">Tuyen P. Le</a><sup>1,&dagger;</sup>,
+        <a href="https://scholar.google.com/citations?user=s5_69i0AAAAJ&amp;hl=vi&amp;oi=ao" target="_blank" rel="noopener">Quan Nguyen</a><sup>3,&ddagger;</sup></p>
+      <p class="affiliations">
+        <span class="affil"><img src="./images/logos/vinmotion.png" alt="VinMotion" onerror="this.style.display='none'"><sup>1</sup></span>
+        <span class="affil"><img src="./images/logos/vinuni.png" alt="VinUniversity" onerror="this.style.display='none'"><sup>2</sup></span>
+        <span class="affil"><img src="./images/logos/usc.png" alt="USC" onerror="this.style.display='none'"><sup>3</sup></span>
+      </p>
+      <p class="authors-note"><sup>*</sup>Equal contribution &nbsp;&middot;&nbsp; <sup>&dagger;</sup>Equal advising &nbsp;&middot;&nbsp; <sup>&ddagger;</sup>Correspondence</p>
       <div class="cta-row">
-        <a class="btn btn-primary" href="#comparisons">Comparisons</a>
-        <a class="btn btn-ghost" href="#citation">Citation</a>
+        <a class="btn btn-ghost" href="#" target="_blank" rel="noopener">arXiv</a>
+        <a class="btn btn-ghost" href="#" target="_blank" rel="noopener">Code</a>
       </div>
+      <p class="subtitle">When a humanoid robot can no longer keep its balance, the fall itself becomes the problem. Inspired by martial-arts breakfalls (<em>ukemi</em>), Ukemi-SafeFall teaches the robot to roll through the impact and then stand back up.</p>
+
+      <figure class="hero-video">
+        <video class="paper-video" muted loop playsinline controls preload="metadata" poster="./images/framework.png">
+          <source src="./videos/frozen_smp_prior.mp4" type="video/mp4">
+        </video>
+      </figure>
 
       <div class="stats">
         <div class="stat reveal">
@@ -87,117 +103,66 @@
           <div class="lbl">Recovery Success Rate</div>
         </div>
       </div>
-      <p class="stats-note">Simulation surrogates on the fallen-state protocol (<em>N</em>&nbsp;=&nbsp;50). The three percentage reductions are relative to Passive Fall; time-to-stand and recovery success rate are absolute Ukemi-SafeFall results.</p>
+      <p class="stats-note">Simulation, fallen-state protocol (<em>N</em>&nbsp;=&nbsp;50). The first three are reductions vs. Passive Fall.</p>
     </div>
   </header>
 
-  <section id="overview">
-    <div class="wrap">
-      <div class="sec-eyebrow reveal">Overview</div>
-      <h2 class="sec-title reveal">Injury-aware falling and recovery</h2>
-      <p class="sec-intro reveal">Humanoid robots remain vulnerable to falls when balance recovery fails. Controllers
-        that treat falling as terminal failure leave an open safety problem: how to reduce mechanical damage during
-        unavoidable falls while preserving the option to stand up afterward.</p>
-
-      <div class="abstract-card reveal">
-        <p>
-          This paper proposes <b>Ukemi-SafeFall</b>, an ukemi-inspired, injury-aware falling and recovery framework
-          that shapes humanoid fall–recovery behavior through condition-gated rolling and impact-mitigation rewards.
-          In simulation, Ukemi-SafeFall reduces injury-risk surrogates of normalized peak contact force, cumulative
-          peak contact force, and unsafe-contact events by <b>32%</b>, <b>78%</b>, and <b>70%</b>, respectively,
-          compared with passive falling. Experiments further demonstrate that Ukemi-SafeFall transfers to a humanoid
-          platform across a range of falling scenarios.
-        </p>
-        <p>
-          On a fallen-state evaluation protocol (50 simulated episodes per method), Ukemi-SafeFall reaches a
-          <b>98%</b> recovery success rate with time-to-stand <b>1.04±0.27&nbsp;s</b>. The same protocol is used for
-          matched ablations and baselines described below.
-        </p>
-      </div>
-
-      <figure class="figure reveal stack-gap">
+  <section id="abstract">
+    <div class="wrap-wide">
+      <div class="split">
+        <div class="split-text">
+          <div class="sec-eyebrow reveal">Abstract</div>
+          <h2 class="sec-title reveal">Injury-aware falling and recovery</h2>
+          <p class="sec-intro reveal">Humanoid robots fall when balance recovery fails, and most controllers treat that as the end of the task. We handle it instead: Ukemi-SafeFall learns to reduce the mechanical damage of an unavoidable fall while keeping the robot able to stand up afterward. In simulation it cuts normalized peak contact force by <b>32%</b>, cumulative peak contact force by <b>78%</b> and unsafe-contact events by <b>70%</b> compared with passive falling, and it transfers to a physical humanoid across a range of falling scenarios.</p>
+        </div>
+        <figure class="figure reveal">
         <img src="./images/fig01_human_humanoid_ukemi.jpg" loading="lazy"
           alt="Human ukemi demonstration (top) and humanoid ukemi-inspired falling and recovery (bottom)."
           data-lightbox>
-        <figcaption><b>Ukemi inspiration.</b> <em>Ukemi</em> denotes martial-arts breakfall techniques intended to
-          reduce hazardous loading during a fall. A humanoid robot (bottom) performs ukemi-inspired falling and
-          recovery maneuvers for unavoidable falls, inspired by ukemi techniques demonstrated by a human (top).
-        </figcaption>
+        <figcaption><b>Ukemi inspiration.</b> A human performing a breakfall (top) and the humanoid performing an ukemi-inspired fall and recovery (bottom).</figcaption>
       </figure>
+      </div>
 
-      <div class="card-grid">
+      <div class="card-grid stack-gap">
         <div class="info-card reveal" style="--accent: var(--blue)">
-          <div class="card-tag">Condition-gated ukemi</div>
-          <h3>Condition-gated roll and recovery</h3>
-          <p>Rewards activate from torso tilt and head height to encourage roll initiation, roll continuation, soft
-            landing, and standing recovery, without a discrete phase estimator.</p>
+          <div class="card-tag">Condition-gated</div>
+          <h3>Roll and recover</h3>
+          <p>Rolling and recovery rewards switch on automatically from torso tilt and head height, so no separate phase estimator is needed.</p>
         </div>
         <div class="info-card reveal" style="--accent: var(--blue-deep)">
           <div class="card-tag">Impact mitigation</div>
-          <h3>Contact-force shaping</h3>
-          <p>Training limits trunk and arm loading during contact so normalized peak contact force, cumulative peak
-            contact force, and unsafe-contact events are reduced relative to uncontrolled falling.</p>
+          <h3>Shape contact forces</h3>
+          <p>Training penalizes heavy loading on the trunk and arms, which lowers peak contact force and the number of unsafe contacts.</p>
         </div>
         <div class="info-card reveal" style="--accent: var(--teal)">
-          <div class="card-tag">Recovery-oriented</div>
-          <h3>Standing recovery with motion-prior gating</h3>
-          <p>Recovery rewards encourage upright posture and head-height progress. A frozen Score-Matching Motion Prior
-            multiplies the task reward to keep motions consistent with human reference behavior.</p>
+          <div class="card-tag">Motion prior</div>
+          <h3>Stay natural</h3>
+          <p>A frozen Score-Matching Motion Prior scales the reward, keeping the learned motion close to natural human behavior.</p>
         </div>
-      </div>
-
-      <div class="metric-strip reveal">
-        <h3 class="metric-strip-title">What we measure</h3>
-        <p class="metric-strip-lead">We report <em>injury-risk surrogates</em> (simulation contact quantities, not
-          direct hardware damage) and <em>recovery surrogates</em> under the fallen-state protocol. Names match the
-          paper definitions.</p>
-        <ul class="metric-list">
-          <li><b>Normalized peak contact force</b> — largest contact force in an episode, expressed as a multiple of
-            body weight. Lower indicates less severe peak impact.</li>
-          <li><b>Cumulative peak contact force</b> — accumulated peak contact loading over time during non-foot
-            contact, reflecting both magnitude and duration.</li>
-          <li><b>Unsafe-contact events</b> — count of potentially hazardous head-proxy, torso, and pelvis contacts.
-          </li>
-          <li><b>Time-to-stand</b> — time from the first non-foot ground contact to first satisfaction of the standing
-            criteria (reported as mean&nbsp;±&nbsp;std.&nbsp;over successful episodes).</li>
-          <li><b>Recovery success rate</b> — fraction of episodes that meet the standing criteria at the final
-            evaluation step.</li>
-        </ul>
       </div>
     </div>
   </section>
 
-  <section id="framework">
+  <section id="method">
     <div class="wrap-wide">
-      <div class="sec-eyebrow reveal">Framework</div>
-      <h2 class="sec-title reveal">Method overview</h2>
-      <p class="sec-intro reveal">We train a reinforcement learning policy with
-        <b>Proximal Policy Optimization</b> for humanoid falling and recovery. The policy maps partial observations to
-        target joint offsets. Training uses a multiplicative reward that combines condition-gated task rewards with a
-        diffusion-based <b>Score-Matching Motion Prior</b> reward. <b>Generative State Initialization</b> samples
-        diverse fallen starting poses from the same prior, and domain randomization varies physical and sensing
-        parameters so the policy sees a wide range of conditions.</p>
+      <div class="sec-eyebrow reveal">Method</div>
+      <h2 class="sec-title reveal">Condition-gated rewards with a motion prior</h2>
+      <p class="sec-intro reveal">We train a policy with Proximal Policy Optimization. Its reward multiplies condition-gated task rewards (safe rolling, impact mitigation, standing up) by a reward from a diffusion-based Score-Matching Motion Prior. The same prior also generates diverse fallen starting poses for training.</p>
 
       <figure class="figure reveal">
         <img src="./images/framework.png?v=20260729fig02" loading="lazy"
           alt="Overview of Ukemi-SafeFall: inputs, frozen Score-Matching Motion Prior, condition-gated policy rewards, and evaluation metrics."
           data-lightbox>
-        <figcaption><b>Overview of Ukemi-SafeFall.</b> A reinforcement learning framework trained via Proximal Policy
-          Optimization for humanoid falling and recovery. The policy uses a multiplicative reward that combines
-          condition-gated task rewards (safe rolling and impact mitigation) with a diffusion-based Score-Matching
-          Motion Prior reward. Generative State Initialization samples fallen starts from the same prior.</figcaption>
+        <figcaption><b>Overview of Ukemi-SafeFall.</b> Inputs and disturbances feed a policy trained with gated task rewards and the frozen motion prior, then evaluated on injury-risk and recovery metrics.</figcaption>
       </figure>
     </div>
   </section>
 
-  <section id="comparisons">
+  <section id="results">
     <div class="wrap-wide">
-      <div class="sec-eyebrow reveal">Comparisons</div>
-      <h2 class="sec-title reveal">Comparisons in simulation</h2>
-      <p class="sec-intro reveal">Using the same fallen-state evaluation protocol, we evaluate Ukemi-SafeFall under
-        three ablations: Ukemi-SafeFall: Recovery Only, Ukemi-SafeFall without condition gating, and Ukemi-SafeFall
-        without Score-Matching Motion Prior reward gating. We also compare against Passive Fall and, as a
-        cross-protocol reference, SafeFall Triangle Proximal Policy Optimization.</p>
+      <div class="sec-eyebrow reveal">Results</div>
+      <h2 class="sec-title reveal">Comparison with baselines and ablations</h2>
+      <p class="sec-intro reveal">All methods are evaluated on the same fallen-state protocol. We compare against Passive Fall, remove one component at a time in three ablations, and include a re-implemented SafeFall baseline as a reference.</p>
 
       <div class="table-scroll reveal">
         <p class="table-caption"><b>Table.</b> Ablation and comparison methods.</p>
@@ -252,9 +217,6 @@
         <p class="table-note">(*) Evaluated and reported as a cross-protocol reference</p>
       </div>
 
-      <h3 class="sec-subtitle reveal">Method rollouts</h3>
-      <p class="sec-intro reveal">Illustrative simulation rollouts for each comparison method and ablation.</p>
-
       <div class="video-grid cols-3 cmp-grid reveal">
         <div class="video-card">
           <div class="video-slot aspect-landscape">
@@ -264,8 +226,7 @@
           </div>
           <div class="video-card-body">
             <h4>Passive Fall</h4>
-            <p>The controller outputs zero action after Generative State Initialization and is subjected to the
-              evaluation disturbances. This baseline characterizes uncontrolled falling.</p>
+            <p>The controller outputs zero action, showing what an uncontrolled fall looks like.</p>
           </div>
         </div>
 
@@ -277,9 +238,7 @@
           </div>
           <div class="video-card-body">
             <h4>Ukemi-SafeFall: Recovery Only</h4>
-            <p>This ablation uses the same multiplicative Score-Matching Motion Prior reward gate and Generative State
-              Initialization procedure as Ukemi-SafeFall, but it is trained only with the upward-motion and head-height
-              recovery rewards.</p>
+            <p>Trained only to get up, without rolling or impact-mitigation rewards.</p>
           </div>
         </div>
 
@@ -291,9 +250,7 @@
           </div>
           <div class="video-card-body">
             <h4>Ukemi-SafeFall without Condition Gating</h4>
-            <p>This ablation retains the proposed ukemi-inspired rewards, contact-force shaping, and Score-Matching
-              Motion Prior gate, but disables the activation conditions; the corresponding reward terms remain active
-              throughout the episode.</p>
+            <p>The ukemi rewards stay active for the whole episode instead of only when needed.</p>
           </div>
         </div>
 
@@ -305,9 +262,7 @@
           </div>
           <div class="video-card-body">
             <h4>Ukemi-SafeFall without Score-Matching Motion Prior Reward Gating</h4>
-            <p>This ablation retains the condition-gated task rewards and contact-force shaping, but removes the
-              multiplicative Score-Matching Motion Prior reward gate. Generative State Initialization continues to
-              sample initial states from the Score-Matching Motion Prior.</p>
+            <p>Keeps the gated task rewards but removes the motion-prior reward gate.</p>
           </div>
         </div>
 
@@ -319,9 +274,7 @@
           </div>
           <div class="video-card-body">
             <h4>SafeFall Triangle Proximal Policy Optimization (*)</h4>
-            <p>We re-implement a SafeFall method to show how a protective falling policy performs without an
-              explicit recovery objective. It is adapted to the same humanoid but uses a different training protocol;
-              therefore, we report it as a cross-protocol reference rather than a matched ablation.</p>
+            <p>A protective-fall baseline with no recovery objective. It uses a different training protocol, so it is a reference only.</p>
           </div>
         </div>
 
@@ -333,24 +286,15 @@
           </div>
           <div class="video-card-body">
             <h4>Ukemi-SafeFall (Ours)</h4>
-            <p>The complete method combines condition-gated ukemi-inspired rewards, contact-force shaping, and
-              multiplicative Score-Matching Motion Prior reward gating.</p>
+            <p>The full method: gated ukemi rewards, contact-force shaping and the motion-prior gate.</p>
           </div>
         </div>
       </div>
-    </div>
-  </section>
 
-  <section id="results">
-    <div class="wrap-wide">
-      <div class="sec-eyebrow reveal">Results</div>
-      <h2 class="sec-title reveal">Sim-to-sim and hardware validation</h2>
-      <p class="sec-intro reveal">We validate Ukemi-SafeFall across falling scenarios including locomotion over
-        obstacles, stair descent, and platform jumps. In a separate MuJoCo-based sim-to-sim environment, the controller
-        exhibits rolling, distributed limb contact, and recovery toward standing. Hardware demonstrations are coming
-        soon.</p>
+      <h2 class="sec-title reveal" style="margin-top:96px">Sim-to-sim and hardware validation</h2>
+      <p class="sec-intro reveal">We test falls that arise from walking, running, stair descent and platform jumps, first in a separate MuJoCo environment and then on a physical humanoid.</p>
 
-      <h3 class="sec-subtitle reveal">Simulation</h3>
+      <h3 class="sec-subtitle reveal">Simulation (sim-to-sim)</h3>
       <div class="video-grid cols-2 cmp-grid reveal">
         <div class="video-card">
           <div class="video-slot aspect-landscape">
@@ -396,19 +340,9 @@
           </div>
         </div>
       </div>
-      <p class="caption-note reveal">Sim-to-sim results: (a) walking and (b) running over 0.08&nbsp;m-high obstacles,
-        (c) descending stairs, and (d) jumping from a 0.6&nbsp;m-high platform.</p>
 
       <h3 class="sec-subtitle reveal">Hardware</h3>
-      <div class="media-placeholder section-placeholder reveal" role="status"
-        aria-label="Hardware demonstrations forthcoming">
-        <span class="ph-title">Hardware experiments</span>
-        <span class="ph-sub">Coming soon</span>
-      </div>
-      <!--
-      <p class="sec-intro reveal">Qualitative deployments on the in-house humanoid (23 actuated degrees of freedom).
-        These demonstrations show transfer of the fall–recovery sequence under sim-to-real mismatch; they do not
-        support the quantitative injury-risk or recovery surrogate claims above.</p>
+      <p class="sec-intro reveal">Qualitative demonstrations on our in-house humanoid with 23 actuated degrees of freedom. They show that the behavior transfers to hardware; the quantitative metrics come from simulation.</p>
 
       <div class="video-grid cols-2 cmp-grid reveal">
         <div class="video-card">
@@ -425,7 +359,7 @@
         <div class="video-card">
           <div class="video-slot aspect-landscape">
             <video class="paper-video" muted playsinline controls preload="none">
-              <source src="./videos/hardware_roll_demo_02_bind.mp4" type="video/mp4">
+              <source src="./videos/hardware_roll_demo_02.mp4" type="video/mp4">
             </video>
           </div>
           <div class="video-card-body">
@@ -447,7 +381,7 @@
         <div class="video-card">
           <div class="video-slot aspect-landscape">
             <video class="paper-video" muted playsinline controls preload="none">
-              <source src="./videos/roll_from_platform.mp4" type="video/mp4">
+              <source src="./videos/roll_from_platform_real.mp4" type="video/mp4">
             </video>
           </div>
           <div class="video-card-body">
@@ -455,9 +389,6 @@
           </div>
         </div>
       </div>
-      <p class="caption-note reveal">Hardware experiments: (a) pushing from standing, (b) kicking while walking,
-        (c) walking over a 0.08&nbsp;m strip obstacle, and (d) jumping from a 0.6&nbsp;m platform.</p>
-      -->
     </div>
   </section>
 
@@ -467,11 +398,12 @@
       <h2 class="sec-title reveal">Citation</h2>
       <div class="bibtex-box reveal">
         <button class="copy-btn" id="copy-bib" type="button">Copy</button>
-        <pre id="bib-text">@inproceedings{anonymous2026ukemisafefall,
+        <pre id="bib-text">@inproceedings{tran2026ukemisafefall,
   title     = {Ukemi-SafeFall: An Ukemi-inspired Injury-Aware Falling and Recovery},
-  author    = {Anonymous Authors},
-  booktitle = {Under Review},
-  year      = {2026}
+  author    = {Tran, Duc Anh and Vu, Quang-Anh and Nguyen, Hieu T. and Pham, Loc and Nguyen, Le-Chuong and Dao, Quang Huy and Vu, Dao Hoang and Nguyen, Truong and Nguyen, Chuong and Le, Tuyen P. and Nguyen, Quan},
+  booktitle = {2026 IEEE-RAS 25th International Conference on Humanoid Robots (Humanoids)},
+  year      = {2026},
+  note      = {Tran Duc Anh and Quang-Anh Vu contributed equally.}
 }</pre>
       </div>
     </div>
@@ -480,7 +412,7 @@
   <footer>
     <div class="wrap-wide foot-inner">
       <div class="foot-word">Ukemi-SafeFall</div>
-      <div>Anonymous manuscript under review. Simulation clips autoplay muted; hardware demonstrations coming soon.</div>
+      <div>Accepted to IEEE-RAS Humanoids 2026.</div>
     </div>
   </footer>
 
